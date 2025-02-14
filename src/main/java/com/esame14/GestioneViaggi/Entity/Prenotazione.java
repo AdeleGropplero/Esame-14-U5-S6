@@ -19,19 +19,13 @@ public class Prenotazione {
     private LocalDate dataDiRichiesta;
     private String note;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "viaggio_id")
-    private Viaggio viaggio;
-
-    public Prenotazione(String note, Viaggio viaggio) {
+    public Prenotazione(String note) {
         this.dataDiRichiesta = LocalDate.now();
         this.note = note;
-        this.viaggio = viaggio;
     }
 
-    public Prenotazione(LocalDate dataDiRichiesta, String note, Viaggio viaggio) {
+    public Prenotazione(LocalDate dataDiRichiesta, String note) {
         this.dataDiRichiesta = dataDiRichiesta;
         this.note = note;
-        this.viaggio = viaggio;
     }
 }

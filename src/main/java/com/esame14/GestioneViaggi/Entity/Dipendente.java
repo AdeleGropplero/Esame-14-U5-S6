@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -22,22 +24,14 @@ public class Dipendente {
     @Column (unique = true)
     private String email;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "prenotazione_id")
-    private Prenotazione prenotazione;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "dipendente_id")
+    private List<Prenotazione> prenotazioni;
 
     public Dipendente(String nome, String cognome, String email) {
         this.username = nome + "_" + cognome;
         this.nome = nome;
         this.cognome = cognome;
         this.email = email;
-    }
-
-    public Dipendente(String nome, String cognome, String email, Prenotazione prenotazione) {
-        this.username = nome + "_" + cognome;
-        this.nome = nome;
-        this.cognome = cognome;
-        this.email = email;
-        this.prenotazione = prenotazione;
     }
 }

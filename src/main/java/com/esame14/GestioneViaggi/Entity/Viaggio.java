@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -22,6 +24,10 @@ public class Viaggio {
     private LocalDate dataViaggio;
 
     private StatoViaggio statoViaggio;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "viaggio_id")
+    private List<Prenotazione> prenotazioni;
 
     public Viaggio(String destinazione, LocalDate dataViaggio, StatoViaggio statoViaggio) {
         this.destinazione = destinazione;

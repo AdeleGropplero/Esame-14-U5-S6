@@ -1,3 +1,4 @@
+/*
 package com.esame14.GestioneViaggi.controller;
 
 import com.esame14.GestioneViaggi.Service.PrenotazioneService;
@@ -10,4 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class PrenotazioniController {
     @Autowired
     private PrenotazioneService prenotazioneService;
+
 }
+*/
