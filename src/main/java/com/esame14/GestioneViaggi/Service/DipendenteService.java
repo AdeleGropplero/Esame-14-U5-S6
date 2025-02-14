@@ -12,7 +12,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class DipendenteService {
@@ -111,6 +113,7 @@ public class DipendenteService {
     }
 
     //Metodi per CRUD Prenotazioni
+
     //Post
     public String inserisciPrenotazioni(Long idDipendente, Long idViaggio, String note){
         //Recupero gli oggetti dal dataBase per id
@@ -137,7 +140,6 @@ public class DipendenteService {
             viaggioRepository.save(viaggio); //Stessa cosa qui.
         }
 
-
         //Stampo informazioni utili in lettura
         return "Prenotazione aggiunta per il dipendente: " + dipendente.getUsername() +
                 " (id: " + idDipendente + ")" +
@@ -145,6 +147,32 @@ public class DipendenteService {
                 " (id: " + idViaggio + ")";
     }
 
+    //GetAllPrenotazioniPerIdDipendente
+    public List<Prenotazione> getAllPrenotazioniById(Long id){
+        //dipendenteRepository.prenotazioni(id);
+        Dipendente dipendente = dipendenteRepository.findById(id).orElseThrow(
+                () -> new OggettoNulloException("Non risulta un dipendente con id: " + id));
+        return dipendente.getPrenotazioni();
+    } //per fare una get di tutte le prenotazioni mi servirebbe un PrenotazioniRepository
+      // oppure posso provare a fare il seguente metodo:
+
+    public String getAllPrenotazioni(){
+        List<Dipendente> dipendenti = dipendenteRepository.findAll();
+        List<Prenotazione> prenotazioni = new ArrayList<>();
+        dipendenti.forEach(dipendente -> prenotazioni.addAll(dipendente.getPrenotazioni()));
+        return "Ecco una lista di tutte le prenotazioni: " +
+                prenotazioni.stream()
+                        .map(p -> "ID: " + p.getId() + ", Data: " + p.getDataDiRichiesta() + ", Note: " + p.getNote())
+                        .collect(Collectors.joining(" \n "));
+    }
+
+
+
 
 
 }
+
+
+
+
+
