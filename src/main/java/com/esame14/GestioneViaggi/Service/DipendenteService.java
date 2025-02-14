@@ -127,10 +127,16 @@ public class DipendenteService {
         viaggio.getPrenotazioni().add(prenotazione);
 
 
-        //Faccio l'upDate degli obj in DB viaggio e dipendente. E faccio il controllo richiesto:
-        if (dipendenteRepository.esistePrenotazionePerData(idDipendente, viaggio.getDataViaggio()))
-        dipendenteRepository.save(dipendente); //save() gestisce sia insert che update.
-        viaggioRepository.save(viaggio); //Stessa cosa qui.
+        //Faccio l'upDate degli obj in DB viaggio e dipendente. E faccio il controllo richiesto tramite una
+        // query nel repository.
+        if (dipendenteRepository.esistePrenotazionePerData(idDipendente, viaggio.getDataViaggio())){
+            throw new RuntimeException("Il dipendente: " + dipendente.getUsername() +
+                    " (id: " + idDipendente + ")" + "ha già un viaggio prenotato per questa data!");
+        }else {
+            dipendenteRepository.save(dipendente); //save() gestisce sia insert che update.
+            viaggioRepository.save(viaggio); //Stessa cosa qui.
+        }
+
 
         //Stampo informazioni utili in lettura
         return "Prenotazione aggiunta per il dipendente: " + dipendente.getUsername() +
