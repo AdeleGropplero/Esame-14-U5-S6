@@ -61,13 +61,13 @@ public class DipendenteService {
                 () -> new OggettoNulloException("Non risulta un dipendente con id: " + id)
         ); // Cerca il dipendente con l'ID specificato e lancia un'eccezione se non viene trovato.
         //
-        if (dipendente.getNome() != null) {
+        if (dipendenteDTO.getNome() != null) {
             dipendente.setNome(dipendenteDTO.getNome());
         }
-        if (dipendente.getCognome() != null) {
+        if (dipendenteDTO.getCognome() != null) {
             dipendente.setCognome(dipendenteDTO.getCognome());
         }
-        if (dipendente.getEmail() != null) {
+        if (dipendenteDTO.getEmail() != null) {
             dipendente.setEmail(dipendenteDTO.getEmail());
         }
 

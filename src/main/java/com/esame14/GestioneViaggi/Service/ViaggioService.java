@@ -54,13 +54,13 @@ public class ViaggioService {
                 () -> new OggettoNulloException("Non risulta un viaggio con id: " + id)
                 ); // Cerca il viaggio con l'ID specificato e lancia un'eccezione se non viene trovato.
         //
-        if (viaggio.getDestinazione() != null){
+        if (viaggioDTO.getDestinazione() != null){
             viaggio.setDestinazione(viaggioDTO.getDestinazione());
         }
-        if (viaggio.getStatoViaggio() != null){
+        if (viaggioDTO.getStatoViaggio() != null){
             viaggio.setStatoViaggio(viaggioDTO.getStatoViaggio());
         }
-        if (viaggio.getDataViaggio() != null){
+        if (viaggioDTO.getDataViaggio() != null){
             viaggio.setDataViaggio(viaggioDTO.getDataViaggio());
         }
 
