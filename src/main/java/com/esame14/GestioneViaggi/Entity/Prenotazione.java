@@ -19,6 +19,10 @@ public class Prenotazione {
     private LocalDate dataDiRichiesta;
     private String note;
 
+    @ManyToOne
+    @JoinColumn(name = "viaggio_id", referencedColumnName = "id")
+    private Viaggio viaggio;  // Aggiunta della relazione ManyToOne con Viaggio
+
     public Prenotazione(String note) {
         this.dataDiRichiesta = LocalDate.now();
         this.note = note;
@@ -27,5 +31,6 @@ public class Prenotazione {
     public Prenotazione(LocalDate dataDiRichiesta, String note) {
         this.dataDiRichiesta = dataDiRichiesta;
         this.note = note;
+
     }
 }

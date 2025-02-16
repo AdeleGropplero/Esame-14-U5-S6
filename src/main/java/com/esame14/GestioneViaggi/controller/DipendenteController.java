@@ -1,5 +1,6 @@
 package com.esame14.GestioneViaggi.controller;
 
+import com.esame14.GestioneViaggi.Entity.Prenotazione;
 import com.esame14.GestioneViaggi.Service.DipendenteService;
 import com.esame14.GestioneViaggi.Service.ViaggioService;
 import com.esame14.GestioneViaggi.payload.DipendenteDTO;
@@ -88,7 +89,36 @@ public class DipendenteController {
     }
 
     //---------------------------------------------------------------------------------------------
-    //
+    // Endpoint per prenotazioni
+
+    //POSTMAN --> http://localhost:8080/dipendenti/prenotazioni?idDipendente=n&idViaggio=n&note=iserireNota
+    //Post
+    @PostMapping("/prenotazioni")
+    public ResponseEntity<String> createPrenotazione(@RequestParam Long idDipendente,
+                                     @RequestParam Long idViaggio,
+                                     @RequestParam(required = false) String note){
+        String response = dipendenteService.inserisciPrenotazione(idDipendente, idViaggio, note);
+        return ResponseEntity.ok(response);
+    }
+
+    //POSTMAN --> http://localhost:8080/dipendenti/prenotazioni
+    //Get all
+    @GetMapping("/prenotazioni")
+    public ResponseEntity<String> getAllPrenotazioni(){
+        String response = dipendenteService.getAllPrenotazioni();
+        return ResponseEntity.ok(response);
+    }
+
+    //POSTMAN --> http://localhost:8080/dipendenti/prenotazioni/id
+    //Get By id
+    @GetMapping("/prenotazioni/{id}")
+    public ResponseEntity<List<Prenotazione>> getPrenotazioniByIdUtente(@PathVariable Long idUtente){
+        List<Prenotazione> prenotazioniUtente = dipendenteService.getAllPrenotazioniById(idUtente);
+        return ResponseEntity.ok(prenotazioniUtente);
+    }
+
+
+
 
 
 

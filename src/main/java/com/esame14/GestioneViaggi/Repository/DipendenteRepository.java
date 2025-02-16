@@ -16,7 +16,7 @@ public interface DipendenteRepository extends JpaRepository<Dipendente, Long> {
     //Se il dipendente ha già una prenotazione nella stessa data in cui sta cercando di prenotare
     //gli verrà dato un avviso e impedito di farlo nel Service.
 
-    @Query ("SELECT COUNT(p) > 0 FROM Dipendente d JOIN d.prenotazioni p JOIN p.viaggio v" +
+    @Query ("SELECT COUNT(p) > 0 FROM Dipendente d JOIN d.prenotazioni p JOIN p.viaggio v " +
             "WHERE d.id = :dipendenteId AND v.dataViaggio = :dataViaggio")
     boolean esistePrenotazionePerData(@Param("dipendenteId") Long dipendenteId,
                                       @Param("dataViaggio") LocalDate dataViaggio);

@@ -4,6 +4,7 @@ import com.esame14.GestioneViaggi.Entity.Dipendente;
 import com.esame14.GestioneViaggi.Entity.Prenotazione;
 import com.esame14.GestioneViaggi.Entity.Viaggio;
 import com.esame14.GestioneViaggi.Exception.OggettoNulloException;
+import com.esame14.GestioneViaggi.Exception.PrenotazioneEsistenteException;
 import com.esame14.GestioneViaggi.Repository.DipendenteRepository;
 import com.esame14.GestioneViaggi.Repository.ViaggioRepository;
 import com.esame14.GestioneViaggi.payload.DipendenteDTO;
@@ -114,38 +115,42 @@ public class DipendenteService {
 
     //Metodi per CRUD Prenotazioni
 
-    //Post
-    public String inserisciPrenotazioni(Long idDipendente, Long idViaggio, String note){
-        //Recupero gli oggetti dal dataBase per id
+    // Post
+    public String inserisciPrenotazione(Long idDipendente, Long idViaggio, String note){
+        // Recupero gli oggetti dal database per id
         Dipendente dipendente = dipendenteRepository.findById(idDipendente).orElseThrow(
                 () -> new OggettoNulloException("Non risulta un dipendente con id: " + idDipendente));
         Viaggio viaggio = viaggioRepository.findById(idViaggio).orElseThrow(
                 () -> new OggettoNulloException("Non risulta un viaggio con id: " + idViaggio));
 
-        //Istanzio un oggetto prenotazione
+        // Controllo se esiste già una prenotazione per questa data di viaggio
+        boolean prenotazioneEsistente = dipendente.getPrenotazioni().stream()
+                .anyMatch(p -> p.getViaggio().getDataViaggio().equals(viaggio.getDataViaggio()));
+
+        // Se esiste una prenotazione per la stessa data, lancia eccezione
+        if (prenotazioneEsistente) {
+            throw new PrenotazioneEsistenteException("Il dipendente: " + dipendente.getUsername() +
+                    " (id: " + idDipendente + ")" + " ha già un viaggio prenotato per questa data!");
+        }
+
+        // Istanzio un oggetto prenotazione
         Prenotazione prenotazione = new Prenotazione(note);
 
-        //aggiungo la prenotazione alle liste Prenotazione di dipendente e viaggio
+        // Aggiungo la prenotazione alle liste prenotazioni di dipendente e viaggio
         dipendente.getPrenotazioni().add(prenotazione);
         viaggio.getPrenotazioni().add(prenotazione);
 
+        // Faccio l'update degli oggetti nel DB
+        dipendenteRepository.save(dipendente); // Salvo o aggiorno il dipendente
+        viaggioRepository.save(viaggio); // Salvo o aggiorno il viaggio
 
-        //Faccio l'upDate degli obj in DB viaggio e dipendente. E faccio il controllo richiesto tramite una
-        // query nel repository.
-        if (dipendenteRepository.esistePrenotazionePerData(idDipendente, viaggio.getDataViaggio())){
-            throw new RuntimeException("Il dipendente: " + dipendente.getUsername() +
-                    " (id: " + idDipendente + ")" + "ha già un viaggio prenotato per questa data!");
-        }else {
-            dipendenteRepository.save(dipendente); //save() gestisce sia insert che update.
-            viaggioRepository.save(viaggio); //Stessa cosa qui.
-        }
-
-        //Stampo informazioni utili in lettura
+        // Restituisco un messaggio di conferma
         return "Prenotazione aggiunta per il dipendente: " + dipendente.getUsername() +
                 " (id: " + idDipendente + ")" +
-                " per il viaggio" + viaggio.getDestinazione() +
+                " per il viaggio verso " + viaggio.getDestinazione() +
                 " (id: " + idViaggio + ")";
     }
+
 
     //GetAllPrenotazioniPerIdDipendente
     public List<Prenotazione> getAllPrenotazioniById(Long id){
@@ -170,7 +175,45 @@ public class DipendenteService {
 
 
 
+
+
 }
+
+/*   Ho dovuto cambiare il seguente cosice perchè per come era impostato precedentemente non poteva funzionare...
+
+ //Post
+    public String inserisciPrenotazione(Long idDipendente, Long idViaggio, String note){
+        //Recupero gli oggetti dal dataBase per id
+        Dipendente dipendente = dipendenteRepository.findById(idDipendente).orElseThrow(
+                () -> new OggettoNulloException("Non risulta un dipendente con id: " + idDipendente));
+        Viaggio viaggio = viaggioRepository.findById(idViaggio).orElseThrow(
+                () -> new OggettoNulloException("Non risulta un viaggio con id: " + idViaggio));
+
+        //Istanzio un oggetto prenotazione
+        Prenotazione prenotazione = new Prenotazione(note);
+
+        //aggiungo la prenotazione alle liste Prenotazione di dipendente e viaggio
+        dipendente.getPrenotazioni().add(prenotazione);
+        viaggio.getPrenotazioni().add(prenotazione);
+
+
+
+        //Faccio l'upDate degli obj in DB viaggio e dipendente. E faccio il controllo richiesto tramite una
+        // query nel repository.
+        if (dipendenteRepository.esistePrenotazionePerData(idDipendente, viaggio.getDataViaggio())){
+            throw new PrenotazioneEsistenteException("Il dipendente: " + dipendente.getUsername() +
+                    " (id: " + idDipendente + ")" + "ha già un viaggio prenotato per questa data!");
+        }else {
+            dipendenteRepository.save(dipendente); //save() gestisce sia insert che update.
+            viaggioRepository.save(viaggio); //Stessa cosa qui.
+        }
+
+        //Stampo informazioni utili in lettura
+        return "Prenotazione aggiunta per il dipendente: " + dipendente.getUsername() +
+                " (id: " + idDipendente + ")" +
+                " per il viaggio" + viaggio.getDestinazione() +
+                " (id: " + idViaggio + ")";
+    }*/
 
 
 
