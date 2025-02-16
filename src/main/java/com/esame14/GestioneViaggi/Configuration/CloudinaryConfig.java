@@ -12,6 +12,8 @@ import java.util.Map;
 @Configuration
 public class CloudinaryConfig {
 
+    //Ho messo i dati qui sotto nel file application.properties
+
     @Value("${cloudinary.cloud.name}")
     private String cloudName;
 

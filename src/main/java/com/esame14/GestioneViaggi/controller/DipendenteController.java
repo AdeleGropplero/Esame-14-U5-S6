@@ -15,6 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -90,6 +91,13 @@ public class DipendenteController {
     public String cancellaDipendente(@PathVariable Long id) {
         return dipendenteService.deleteDipendente(id);
     }
+
+    // POSTMAN --> http://localhost:8080/dipendenti/idDipendente/uploadImage
+    @PostMapping("/{idDipendente}/uploadImage")
+    public String uploadImage(@PathVariable Long idDipendente, @RequestParam("file") MultipartFile file) {
+        return dipendenteService.uploadImmagine(idDipendente, file);
+    }
+
 
     //---------------------------------------------------------------------------------------------
     // Endpoint per prenotazioni

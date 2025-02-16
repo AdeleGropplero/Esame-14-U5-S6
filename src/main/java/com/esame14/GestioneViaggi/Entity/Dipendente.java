@@ -28,6 +28,8 @@ public class Dipendente {
     @JoinColumn(name = "dipendente_id")
     private List<Prenotazione> prenotazioni;
 
+    private String imageUrl;
+
     public Dipendente(String nome, String cognome, String email) {
         this.username = nome + "_" + cognome;
         this.nome = nome;

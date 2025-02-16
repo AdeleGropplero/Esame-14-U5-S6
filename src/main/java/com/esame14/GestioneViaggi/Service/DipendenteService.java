@@ -1,5 +1,7 @@
 package com.esame14.GestioneViaggi.Service;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import com.esame14.GestioneViaggi.Entity.Dipendente;
 import com.esame14.GestioneViaggi.Entity.Prenotazione;
 import com.esame14.GestioneViaggi.Entity.Viaggio;
@@ -12,9 +14,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,6 +30,9 @@ public class DipendenteService {
 
     @Autowired
     private ViaggioRepository viaggioRepository;
+
+    @Autowired
+    private Cloudinary cloudinary;
 
     //Post
     public String insertDipendente(DipendenteDTO newDipendenteDTO) {
@@ -85,6 +94,33 @@ public class DipendenteService {
         dipendenteRepository.delete(dipendente);
         return "Dipendente  con id: " + id + " eliminato.";
     }
+
+    // Metodo per caricare un'immagine per un dipendente
+    public String uploadImmagine(Long idDipendente, MultipartFile file){
+        Dipendente dipendente = dipendenteRepository.findById(idDipendente).orElseThrow(
+                () -> new OggettoNulloException("Non risulta un dipendente con id: " + idDipendente));
+
+        try {
+            // Carico l'immagine su Cloudinary
+            Map<String, Object> caricaRisultato = cloudinary.uploader().
+                    upload(file.getBytes(), ObjectUtils.emptyMap());
+
+            // Ottiengo qui l'URL dell'immagine
+            String imageUrl = (String) caricaRisultato.get("url");
+
+            // Imposto l'URL dell'immagine nel dipendente
+            dipendente.setImageUrl(imageUrl);
+
+            // Salvo il dipendente con l'immagine aggiornata
+            dipendenteRepository.save(dipendente);
+
+            return "Immagine caricata correttamente per il dipendente: " + dipendente.getUsername();
+        }catch (IOException e) {
+            throw new RuntimeException("Errore nel caricamento dell'immagine: " + e.getMessage());
+        }
+
+    }
+
 
     //METODI TRAVASO
     //Da DTO ad Entity
