@@ -22,7 +22,7 @@ public class Viaggio {
     private String destinazione;
     @Column(name = "data_viaggio")
     private LocalDate dataViaggio;
-
+    @Enumerated(EnumType.STRING)
     private StatoViaggio statoViaggio;
 
     @OneToMany(cascade = CascadeType.ALL)
@@ -33,5 +33,14 @@ public class Viaggio {
         this.destinazione = destinazione;
         this.dataViaggio = dataViaggio;
         this.statoViaggio = statoViaggio;
+    }
+
+    @Override
+    public String toString() {
+        return "Viaggio{" +
+                "id=" + id +
+                ", destinazione='" + destinazione + '\'' +
+                ", dataViaggio=" + dataViaggio +
+                '}';
     }
 }

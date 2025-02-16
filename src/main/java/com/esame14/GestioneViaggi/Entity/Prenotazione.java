@@ -1,5 +1,6 @@
 package com.esame14.GestioneViaggi.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,7 +22,12 @@ public class Prenotazione {
 
     @ManyToOne
     @JoinColumn(name = "viaggio_id", referencedColumnName = "id")
-    private Viaggio viaggio;  // Aggiunta della relazione ManyToOne con Viaggio
+    @JsonIgnore
+    private Viaggio viaggio;  // Aggiungo la relazione ManyToOne con Viaggio
+
+    @ManyToOne
+    @JoinColumn(name = "dipendente_id", referencedColumnName = "id")
+    private Dipendente dipendente;
 
     public Prenotazione(String note) {
         this.dataDiRichiesta = LocalDate.now();
@@ -33,4 +39,13 @@ public class Prenotazione {
         this.note = note;
 
     }
+
+    @Override
+    public String toString() {
+        return "Prenotazione{" +
+                "id=" + id +
+                ", note='" + note + '\'' +
+                '}';
+    }
+
 }

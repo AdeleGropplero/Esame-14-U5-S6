@@ -88,3 +88,59 @@ public class ViaggioController {
 
 }
 
+/*
+Lista viaggi JSON per Postman:
+[
+  {
+    "destinazione": "Roma",
+    "dataViaggio": "2025-03-01",
+    "statoViaggio": "IN_PROGRAMMA"
+  },
+  {
+    "destinazione": "Milano",
+    "dataViaggio": "2025-04-10",
+    "statoViaggio": "COMPLETATO"
+  },
+  {
+    "destinazione": "Napoli",
+    "dataViaggio": "2025-05-15",
+    "statoViaggio": "IN_PROGRAMMA"
+  },
+  {
+    "destinazione": "Venezia",
+    "dataViaggio": "2025-06-20",
+    "statoViaggio": "COMPLETATO"
+  },
+  {
+    "destinazione": "Torino",
+    "dataViaggio": "2025-07-12",
+    "statoViaggio": "IN_PROGRAMMA"
+  },
+  {
+    "destinazione": "Bologna",
+    "dataViaggio": "2025-08-05",
+    "statoViaggio": "COMPLETATO"
+  },
+  {
+    "destinazione": "Firenze",
+    "dataViaggio": "2025-09-09",
+    "statoViaggio": "IN_PROGRAMMA"
+  },
+  {
+    "destinazione": "Catania",
+    "dataViaggio": "2025-10-25",
+    "statoViaggio": "COMPLETATO"
+  },
+  {
+    "destinazione": "Palermo",
+    "dataViaggio": "2025-11-30",
+    "statoViaggio": "IN_PROGRAMMA"
+  },
+  {
+    "destinazione": "Genova",
+    "dataViaggio": "2025-12-15",
+    "statoViaggio": "COMPLETATO"
+  }
+]
+
+*/

@@ -91,6 +91,7 @@ public class DipendenteService {
     public Dipendente dto_entity(DipendenteDTO dipendenteDTO) {
         if (dipendenteDTO != null) {
             Dipendente dipendente = new Dipendente();
+            dipendente.setUsername(dipendenteDTO.getNome()+"_"+dipendenteDTO.getCognome());
             dipendente.setNome(dipendenteDTO.getNome());
             dipendente.setCognome(dipendenteDTO.getCognome());
             dipendente.setEmail(dipendenteDTO.getEmail());
@@ -135,10 +136,12 @@ public class DipendenteService {
 
         // Istanzio un oggetto prenotazione
         Prenotazione prenotazione = new Prenotazione(note);
+        prenotazione.setViaggio(viaggio);
+        prenotazione.setDipendente(dipendente);
 
-        // Aggiungo la prenotazione alle liste prenotazioni di dipendente e viaggio
+        // Aggiungo la prenotazione alla lista prenotazioni di dipendente
         dipendente.getPrenotazioni().add(prenotazione);
-        viaggio.getPrenotazioni().add(prenotazione);
+//        viaggio.getPrenotazioni().add(prenotazione);
 
         // Faccio l'update degli oggetti nel DB
         dipendenteRepository.save(dipendente); // Salvo o aggiorno il dipendente
@@ -165,13 +168,12 @@ public class DipendenteService {
         List<Dipendente> dipendenti = dipendenteRepository.findAll();
         List<Prenotazione> prenotazioni = new ArrayList<>();
         dipendenti.forEach(dipendente -> prenotazioni.addAll(dipendente.getPrenotazioni()));
-        return "Ecco una lista di tutte le prenotazioni: " +
+        return "Ecco una lista di tutte le prenotazioni: \n" +
                 prenotazioni.stream()
-                        .map(p -> "ID: " + p.getId() + ", Data: " + p.getDataDiRichiesta() + ", Note: " + p.getNote())
-                        .collect(Collectors.joining(" \n "));
+                        .map(p -> "ID: " + p.getId() + ", Data: " + p.getDataDiRichiesta() +
+                                ", Note: " + p.getNote() + ", dipendente: " + p.getDipendente().getId() +
+                                ", viaggio: " + p.getViaggio().getId()).collect(Collectors.joining(" \n "));
     }
-
-
 
 
 

@@ -7,6 +7,7 @@ import com.esame14.GestioneViaggi.payload.DipendenteDTO;
 import com.esame14.GestioneViaggi.payload.ViaggioDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -55,9 +56,11 @@ public class DipendenteController {
         }
     }
 
-    // POSTMAN --> http://localhost:8080/dipendenti
+    // POSTMAN --> http://localhost:8080/dipendenti?page=2&size=10
     @GetMapping
-    public ResponseEntity<Page<DipendenteDTO>> getAllDipendenti(Pageable pageable) {
+    public ResponseEntity<Page<DipendenteDTO>> getAllDipendenti(@RequestParam(defaultValue = "0") int page,
+                                                                @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
         return ResponseEntity.ok(dipendenteService.getAllDipendenti(pageable));
     }
 
@@ -91,12 +94,12 @@ public class DipendenteController {
     //---------------------------------------------------------------------------------------------
     // Endpoint per prenotazioni
 
-    //POSTMAN --> http://localhost:8080/dipendenti/prenotazioni?idDipendente=n&idViaggio=n&note=iserireNota
+    //POSTMAN --> http://localhost:8080/dipendenti/prenotazioni?idDipendente=n&idViaggio=n
     //Post
     @PostMapping("/prenotazioni")
     public ResponseEntity<String> createPrenotazione(@RequestParam Long idDipendente,
                                      @RequestParam Long idViaggio,
-                                     @RequestParam(required = false) String note){
+                                     @RequestBody(required = false) String note){
         String response = dipendenteService.inserisciPrenotazione(idDipendente, idViaggio, note);
         return ResponseEntity.ok(response);
     }
@@ -109,20 +112,146 @@ public class DipendenteController {
         return ResponseEntity.ok(response);
     }
 
-    //POSTMAN --> http://localhost:8080/dipendenti/prenotazioni/id
+/*    //POSTMAN --> http://localhost:8080/dipendenti/prenotazioni/id
     //Get By id
-    @GetMapping("/prenotazioni/{id}")
+    @GetMapping("/prenotazioni/{idUtente}")
     public ResponseEntity<List<Prenotazione>> getPrenotazioniByIdUtente(@PathVariable Long idUtente){
         List<Prenotazione> prenotazioniUtente = dipendenteService.getAllPrenotazioniById(idUtente);
         return ResponseEntity.ok(prenotazioniUtente);
-    }
-
-
-
-
-
+    }*/
 
 
 
 
 }
+/*
+Lista Dipendenti per Postman:
+[
+
+    {
+        "username": "Paolo_Ferrari",
+        "nome": "Paolo",
+        "cognome": "Ferrari",
+        "email": "paolo.ferrari@example.com"
+    },
+    {
+        "username": "Giulia_Simone",
+        "nome": "Giulia",
+        "cognome": "Simone",
+        "email": "giulia.simone@example.com"
+    },
+    {
+        "username": "Francesca_Alessandro",
+        "nome": "Francesca",
+        "cognome": "Alessandro",
+        "email": "francesca.alessandro@example.com"
+    },
+    {
+        "username": "Giorgio_Parisi",
+        "nome": "Giorgio",
+        "cognome": "Parisi",
+        "email": "giorgio.parisi@example.com"
+    },
+    {
+        "username": "Elena_Vecchi",
+        "nome": "Elena",
+        "cognome": "Vecchi",
+        "email": "elena.vecchi@example.com"
+    },
+    {
+        "username": "Francesco_Martini",
+        "nome": "Francesco",
+        "cognome": "Martini",
+        "email": "francesco.martini@example.com"
+    },
+    {
+        "username": "Sofia_Neri",
+        "nome": "Sofia",
+        "cognome": "Neri",
+        "email": "sofia.neri@example.com"
+    },
+    {
+        "username": "Simone_Santoro",
+        "nome": "Simone",
+        "cognome": "Santoro",
+        "email": "simone.santoro@example.com"
+    },
+    {
+        "username": "Stefano_Tavoli",
+        "nome": "Stefano",
+        "cognome": "Tavoli",
+        "email": "stefano.tavoli@example.com"
+    },
+    {
+        "username": "Alessandra_Serrano",
+        "nome": "Alessandra",
+        "cognome": "Serrano",
+        "email": "alessandra.serrano@example.com"
+    },
+    {
+        "username": "Emanuele_Mancini",
+        "nome": "Emanuele",
+        "cognome": "Mancini",
+        "email": "emanuele.mancini@example.com"
+    },
+    {
+        "username": "Martina_Bello",
+        "nome": "Martina",
+        "cognome": "Bello",
+        "email": "martina.bello@example.com"
+    },
+    {
+        "username": "Tommaso_Romano",
+        "nome": "Tommaso",
+        "cognome": "Romano",
+        "email": "tommaso.romano@example.com"
+    },
+    {
+        "username": "Valentina_Moore",
+        "nome": "Valentina",
+        "cognome": "Moore",
+        "email": "valentina.moore@example.com"
+    },
+    {
+        "username": "Alessio_Fulvio",
+        "nome": "Alessio",
+        "cognome": "Fulvio",
+        "email": "alessio.fulvio@example.com"
+    },
+    {
+        "username": "Riccardo_Lombardi",
+        "nome": "Riccardo",
+        "cognome": "Lombardi",
+        "email": "riccardo.lombardi@example.com"
+    },
+    {
+        "username": "Gabriele_Gallo",
+        "nome": "Gabriele",
+        "cognome": "Gallo",
+        "email": "gabriele.gallo@example.com"
+    },
+    {
+        "username": "Marta_Valeri",
+        "nome": "Marta",
+        "cognome": "Valeri",
+        "email": "marta.valeri@example.com"
+    },
+    {
+        "username": "Antonio_Russo",
+        "nome": "Antonio",
+        "cognome": "Russo",
+        "email": "antonio.russo@example.com"
+    },
+    {
+        "username": "Chiara_Favero",
+        "nome": "Chiara",
+        "cognome": "Favero",
+        "email": "chiara.favero@example.com"
+    }
+]
+*/
+
+/*
+Lista Prenotazioni:
+
+*/
